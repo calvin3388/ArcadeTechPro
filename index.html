@@ -2,882 +2,178 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-<title>Tetris Invaders · Arcade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101923">
+<title>Arcade Tech Pro | Diagnostic System</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    height: 100%;
-    background: #020208;
-    color: #c0ffc0;
-    font-family: 'Courier New', monospace;
-    overflow: hidden;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  #wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 6px;
-    perspective: 900px;
-  }
-  #ui {
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px 8px;
-    font-size: 13px;
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px #0f0;
-    z-index: 5;
-  }
-  #ui span { color: #8f8; }
-  #restartBtn {
-    padding: 5px 10px;
-    background: #0a2a0a;
-    border: 1px solid #0f0;
-    color: #0f0;
-    font-family: inherit;
-    font-size: 11px;
-    cursor: pointer;
-    text-shadow: 0 0 4px #0f0;
-    letter-spacing: 1px;
-  }
-  #restartBtn:active { background: #0f0; color: #000; }
-
-  #cabinet {
-    position: relative;
-    transform: rotateX(8deg);
-    transform-style: preserve-3d;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0,255,80,0.15);
-  }
-  canvas {
-    display: block;
-    background: #060612;
-    border: 3px solid #1a4a1a;
-    border-radius: 4px;
-    image-rendering: pixelated;
-    max-width: 100%;
-    height: auto;
-  }
-  #hint {
-    margin-top: 8px;
-    font-size: 10px;
-    color: #3a5a3a;
-    text-align: center;
-    max-width: 340px;
-  }
-
-  #overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,8,0.92);
-    text-align: center;
-    z-index: 20;
-    padding: 16px;
-  }
-  #overlay h1 {
-    font-size: 26px;
-    color: #0f0;
-    text-shadow: 0 0 16px #0f0, 0 0 4px #0f0;
-    margin-bottom: 6px;
-    letter-spacing: 2px;
-  }
-  #overlay p {
-    font-size: 12px;
-    color: #7a9a7a;
-    max-width: 280px;
-    line-height: 1.45;
-    margin: 4px 0;
-  }
-  #overlay .btn {
-    margin-top: 14px;
-    padding: 11px 26px;
-    background: #0a2a0a;
-    border: 2px solid #0f0;
-    color: #0f0;
-    font-family: inherit;
-    font-size: 15px;
-    cursor: pointer;
-    text-shadow: 0 0 6px #0f0;
-    letter-spacing: 1px;
-  }
-  #overlay .btn:active { background: #0f0; color: #000; }
-
-  #leaderboard {
-    margin-top: 14px;
-    width: 100%;
-    max-width: 260px;
-    text-align: left;
-    font-size: 12px;
-  }
-  #leaderboard .title {
-    color: #0f0;
-    text-align: center;
-    margin-bottom: 6px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 6px #0f0;
-  }
-  #leaderboard .row {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 0;
-    color: #8f8;
-    border-bottom: 1px solid #0a2a0a;
-  }
-  #leaderboard .rank { width: 24px; color: #4a6; }
-  #leaderboard .name { flex: 1; }
-  #leaderboard .pts { color: #cfc; }
-
-  #nameEntry {
-    display: none;
-    margin-top: 12px;
-  }
-  #nameEntry input {
-    width: 90px;
-    text-align: center;
-    font-family: inherit;
-    font-size: 20px;
-    letter-spacing: 6px;
-    background: #0a1a0a;
-    border: 2px solid #0f0;
-    color: #0f0;
-    padding: 6px;
-    text-transform: uppercase;
-  }
-  #nameEntry .btn { margin-top: 10px; }
+:root{--bg:#0c141d;--panel:#131f2b;--panel2:#182735;--line:#263849;--text:#e8f0f6;--muted:#91a4b5;--teal:#55d6c2;--blue:#62a9ff;--amber:#f4bd63;--red:#f07878;--green:#65d69b;--shadow:0 14px 34px #0003}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -10%,#1b3444 0,transparent 42%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.sidebar{width:248px;background:#0e1822;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column;gap:22px;flex-shrink:0}.brand{display:flex;align-items:center;gap:11px;padding:0 8px}.brandmark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2d807f,#235a78);display:grid;place-items:center;color:white;font-weight:900;font-size:19px}.brand strong{display:block;letter-spacing:.08em;font-size:13px}.brand small{color:var(--muted);font-size:10px;letter-spacing:.12em}.navlabel{font-size:10px;color:#718699;letter-spacing:.16em;padding:0 10px;margin-bottom:6px}.nav{display:grid;gap:5px}.nav button{border:0;background:transparent;color:#a9bac8;text-align:left;padding:11px 12px;border-radius:9px;display:flex;align-items:center;gap:12px}.nav button:hover,.nav button.active{background:#1b3040;color:#f4fbff}.nav button.active{box-shadow:inset 3px 0 var(--teal)}.nav .ico{width:18px;text-align:center;color:var(--teal)}.sidefoot{margin-top:auto;border:1px solid var(--line);background:#121f2b;padding:13px;border-radius:12px;color:var(--muted);font-size:11px}.sidefoot b{color:var(--teal);display:block;margin-bottom:4px}.main{flex:1;min-width:0}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#0d1721cc;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}.crumb{color:var(--muted);font-size:12px}.crumb b{color:var(--text);font-weight:600}.topright{display:flex;align-items:center;gap:12px}.status{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px #65d69b80}.avatar{width:32px;height:32px;border-radius:50%;background:#244354;display:grid;place-items:center;color:#aeece3;font-weight:700}.content{padding:28px 30px 50px;max-width:1500px;margin:auto}.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:23px}.eyebrow{color:var(--teal);font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase}.pagehead h1{margin:5px 0 4px;font-size:27px;letter-spacing:-.035em}.pagehead p{margin:0;color:var(--muted)}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:#1a2a38;color:var(--text);font-weight:600;font-size:12px}.btn:hover{border-color:#4d7785;background:#203646}.btn.primary{background:linear-gradient(135deg,#2c9c91,#247d91);border-color:transparent;color:#06191a}.btn.subtle{background:transparent}.btn.danger{color:#ffb2b2}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:17px}.card{background:linear-gradient(145deg,#172532,#121e29);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:var(--shadow);min-width:0}.stat{display:flex;justify-content:space-between;align-items:flex-start}.stat .label{color:var(--muted);font-size:11px}.stat .value{font-size:27px;font-weight:750;letter-spacing:-.04em;margin-top:7px}.stat .hint{font-size:10px;color:var(--muted);margin-top:2px}.staticon{width:35px;height:35px;border-radius:10px;background:#1d3b45;color:var(--teal);display:grid;place-items:center;font-size:17px}.dashboardgrid{grid-template-columns:1.35fr 1fr}.sectionhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.sectionhead h2{font-size:14px;margin:0}.sectionhead span{color:var(--muted);font-size:11px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;text-align:left;font-size:12px}th{font-size:10px;color:#8297a9;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 9px;border-bottom:1px solid var(--line)}td{padding:12px 9px;border-bottom:1px solid #22313e;color:#d8e3eb}tr:last-child td{border-bottom:0}.muted{color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:30px;font-size:10px;font-weight:700;background:#233542;color:#b8cbd8}.pill.open{background:#4b3a22;color:#ffd18a}.pill.progress{background:#1c3b4a;color:#9bd9ff}.pill.closed{background:#1d3d34;color:#8de5b6}.pill.high{background:#492d31;color:#ffaaaa}.pill.medium{background:#443a27;color:#ffd28a}.pill.low{background:#243b36;color:#9ce2bd}.quickgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick{padding:15px;border:1px solid var(--line);border-radius:11px;background:#152532;text-align:left;color:var(--text)}.quick:hover{border-color:#4c9b99;transform:translateY(-1px)}.quick .qico{font-size:20px;color:var(--teal)}.quick b{display:block;margin:7px 0 3px}.quick small{color:var(--muted);font-size:11px}.notice{border:1px solid #65502e;background:#332a1c;color:#f5d7a3;padding:12px 14px;border-radius:10px;font-size:11px;margin-bottom:16px}.notice b{color:#ffe2ad}.view{display:none}.view.active{display:block}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#a9bdcc;font-weight:650}.field input,.field select,.field textarea,.search{width:100%;border:1px solid #304455;background:#0e1923;color:var(--text);padding:10px 11px;border-radius:8px;outline:none}.field input:focus,.field select:focus,.field textarea:focus,.search:focus{border-color:var(--teal);box-shadow:0 0 0 3px #55d6c21c}.field textarea{min-height:88px;resize:vertical}.field input::placeholder,.field textarea::placeholder{color:#63788a}.formactions{display:flex;gap:9px;justify-content:flex-end;margin-top:16px}.stepbar{display:flex;gap:7px;margin:14px 0 20px}.step{height:4px;background:#293a48;border-radius:8px;flex:1}.step.done{background:var(--teal)}.checklist{display:grid;gap:9px}.checkrow{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--line);border-radius:9px;background:#142330}.checkrow input{accent-color:var(--teal);margin-top:3px}.checkrow span{font-size:12px}.checkrow small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.toolbar{display:flex;gap:9px;align-items:center;margin-bottom:13px;flex-wrap:wrap}.toolbar .search{max-width:310px}.empty{text-align:center;color:var(--muted);padding:30px 12px}.empty b{display:block;color:var(--text);margin-bottom:5px}.kbitem{padding:13px;border:1px solid var(--line);border-radius:10px;background:#142330;margin-bottom:9px}.kbitem h3{font-size:13px;margin:0 0 5px}.kbitem p{font-size:11px;color:var(--muted);margin:0}.kbmeta{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}.smallbtn{border:0;background:transparent;color:var(--teal);font-size:11px;padding:3px}.reportbox{border:1px solid var(--line);background:#111e29;border-radius:12px;padding:16px;margin-top:14px}.reportbox h3{margin:0 0 10px;font-size:14px}.reportline{display:grid;grid-template-columns:150px 1fr;gap:12px;padding:7px 0;border-bottom:1px solid #233440;font-size:12px}.reportline:last-child{border:0}.reportline span:first-child{color:var(--muted)}.toast{position:fixed;right:22px;bottom:22px;background:#d9fff4;color:#0a302b;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);font-weight:700;font-size:12px;z-index:20;display:none}.toast.show{display:block}.footerhint{color:#718698;font-size:10px;margin-top:16px}.hidden{display:none!important}
+@media(max-width:900px){.sidebar{width:210px}.stats{grid-template-columns:repeat(2,1fr)}.dashboardgrid{grid-template-columns:1fr}}
+@media(max-width:650px){.app{display:block}.sidebar{width:100%;padding:12px;gap:10px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:0 5px}.nav{display:flex;overflow:auto}.navlabel,.sidefoot{display:none}.nav button{white-space:nowrap;padding:9px 10px;font-size:11px}.topbar{height:52px;padding:0 15px}.content{padding:20px 14px 40px}.pagehead{display:block}.pagehead .actions{margin-top:14px}.pagehead h1{font-size:23px}.stats{gap:9px}.card{padding:13px}.stat .value{font-size:23px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.reportline{grid-template-columns:110px 1fr}}
+@media print{body{background:#fff;color:#111}.sidebar,.topbar,.pagehead .actions,.no-print{display:none!important}.main,.content{padding:0;margin:0;max-width:none}.view{display:none!important}#view-reports{display:block!important}.card,.reportbox{background:#fff;color:#111;box-shadow:none;border:1px solid #bbb}.reportline span:first-child,td,th{color:#333}.pill{border:1px solid #aaa;background:#fff;color:#111}}
 </style>
 </head>
 <body>
-<div id="wrap">
-  <div id="ui">
-    <div>SCORE <span id="score">0</span></div>
-    <div>LEVEL <span id="level">1</span></div>
-    <div>LIVES <span id="lives">3</span></div>
-    <button id="restartBtn" type="button">RESTART</button>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brandmark">A</div><div><strong>ARCADE TECH PRO</strong><small>WORKSHOP SYSTEM</small></div></div>
+  <div><div class="navlabel">WORKSPACE</div><nav class="nav">
+    <button class="active" data-view="dashboard"><span class="ico">▦</span>Dashboard</button>
+    <button data-view="diagnostics"><span class="ico">⌕</span>New diagnosis</button>
+    <button data-view="machines"><span class="ico">▣</span>Machine register</button>
+    <button data-view="knowledge"><span class="ico">▤</span>Knowledge base</button>
+    <button data-view="reports"><span class="ico">▧</span>Fault reports</button>
+  </nav></div>
+  <div><div class="navlabel">DATA & SETTINGS</div><nav class="nav">
+    <button id="exportBtn"><span class="ico">⇩</span>Export data</button>
+    <button id="importBtn"><span class="ico">⇧</span>Import data</button>
+    <input id="importFile" type="file" accept="application/json" class="hidden">
+  </nav></div>
+  <div class="sidefoot"><b>● OFFLINE-READY PROTOTYPE</b>Data is stored in this browser on this device. Export backups regularly.</div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="crumb">Workshop / <b id="crumb">Dashboard</b></div><div class="topright"><div class="status"><span class="dot"></span>Local mode</div><div class="avatar">T</div></div></header>
+<div class="content">
+<section class="view active" id="view-dashboard">
+  <div class="pagehead"><div><div class="eyebrow">TECHNICAL OPERATIONS</div><h1>Workshop overview</h1><p>Monitor fault diagnosis, machine records and technical knowledge.</p></div><div class="actions"><button class="btn" onclick="navigate('machines')">＋ Add machine</button><button class="btn primary" onclick="navigate('diagnostics')">＋ Start diagnosis</button></div></div>
+  <div class="grid stats">
+    <div class="card stat"><div><div class="label">REGISTERED MACHINES</div><div class="value" id="statMachines">0</div><div class="hint">In local register</div></div><div class="staticon">▣</div></div>
+    <div class="card stat"><div><div class="label">OPEN FAULTS</div><div class="value" id="statOpen">0</div><div class="hint">Awaiting resolution</div></div><div class="staticon">⌕</div></div>
+    <div class="card stat"><div><div class="label">RESOLVED REPORTS</div><div class="value" id="statResolved">0</div><div class="hint">Marked resolved</div></div><div class="staticon">✓</div></div>
+    <div class="card stat"><div><div class="label">KNOWLEDGE ARTICLES</div><div class="value" id="statKB">0</div><div class="hint">Available references</div></div><div class="staticon">▤</div></div>
   </div>
-  <div id="cabinet">
-    <canvas id="c" width="320" height="480"></canvas>
+  <div class="notice"><b>Safety reminder:</b> This prototype supports documentation and guided fault-finding only. Follow your company's approved procedures, manufacturer documentation and isolation requirements. Never rely on generic prompts as permission to perform live electrical work.</div>
+  <div class="grid dashboardgrid">
+    <div class="card"><div class="sectionhead"><h2>Recent fault activity</h2><button class="smallbtn" onclick="navigate('reports')">View all →</button></div><div class="tablewrap"><table><thead><tr><th>Machine</th><th>Fault</th><th>Priority</th><th>Status</th></tr></thead><tbody id="recentRows"></tbody></table></div></div>
+    <div class="card"><div class="sectionhead"><h2>Quick actions</h2><span>Common tasks</span></div><div class="grid quickgrid">
+      <button class="quick" onclick="navigate('diagnostics')"><span class="qico">⌕</span><b>Start diagnosis</b><small>Record a new machine fault</small></button>
+      <button class="quick" onclick="navigate('machines')"><span class="qico">▣</span><b>Register machine</b><small>Add an asset to the register</small></button>
+      <button class="quick" onclick="navigate('knowledge')"><span class="qico">▤</span><b>Add knowledge</b><small>Capture a useful repair note</small></button>
+      <button class="quick" onclick="navigate('reports')"><span class="qico">▧</span><b>Review reports</b><small>Find previous fault records</small></button>
+    </div></div>
   </div>
-  <div id="hint">← → / A D move · SPACE / TAP shoot · R restart</div>
-</div>
+  <p class="footerhint">Demonstration data is clearly labelled. Replace it with approved company information only after authorisation.</p>
+</section>
 
-<div id="overlay">
-  <h1>TETRIS INVADERS</h1>
-  <p id="msg">Shoot the falling tetromino aliens before they lock.<br>
-  Clear full rows for massive points.<br>
-  Don't let the stack reach the danger line!</p>
-
-  <div id="leaderboard">
-    <div class="title">── HIGH SCORES ──</div>
-    <div id="hsList"></div>
+<section class="view" id="view-diagnostics">
+  <div class="pagehead"><div><div class="eyebrow">FAULT-FINDING WORKFLOW</div><h1>New diagnosis</h1><p>Capture the symptom, document approved checks and record the outcome.</p></div><div class="actions"><button class="btn subtle" onclick="resetDiagnosis()">Reset form</button></div></div>
+  <div class="notice"><b>Work safely:</b> Use the machine manufacturer's service manual and company-approved procedures. This checklist is a record-keeping aid, not a substitute for training, isolation, risk assessment or qualified supervision.</div>
+  <div class="card">
+    <div class="sectionhead"><h2>01 / Fault details</h2><span>Required fields marked *</span></div>
+    <div class="formgrid">
+      <div class="field"><label>Machine / asset *</label><select id="dMachine"><option value="">Select machine</option></select></div>
+      <div class="field"><label>Technician *</label><input id="dTech" placeholder="Technician name"></div>
+      <div class="field"><label>Fault category *</label><select id="dCategory"><option value="">Select category</option><option>Power / startup</option><option>Display / audio</option><option>Controls / input</option><option>Mechanism / motion</option><option>Network / communication</option><option>USB / peripheral</option><option>Software / error code</option><option>Other</option></select></div>
+      <div class="field"><label>Priority</label><select id="dPriority"><option>Low</option><option selected>Medium</option><option>High</option></select></div>
+      <div class="field full"><label>Reported symptom *</label><textarea id="dSymptom" placeholder="Describe what the machine is doing, when it happens and any displayed error..."></textarea></div>
+    </div>
+    <div class="sectionhead" style="margin-top:23px"><h2>02 / Approved checks & observations</h2><span>Tick only checks actually completed</span></div>
+    <div class="checklist" id="diagnosticChecks">
+      <label class="checkrow"><input type="checkbox" value="Confirmed machine identity and reviewed reported symptom"><span>Confirmed machine identity and reviewed reported symptom<small>Record model, asset ID and exact symptom.</small></span></label>
+      <label class="checkrow"><input type="checkbox" value="Reviewed manufacturer documentation and company procedure"><span>Reviewed manufacturer documentation and company procedure<small>Use the correct service information for this model.</small></span></label>
+      <label class="checkrow"><input type="checkbox" value="Checked external condition and visible connections under approved safe conditions"><span>Checked external condition and visible connections under approved safe conditions<small>Only perform inspection within your authorisation and safe work procedure.</small></span></label>
+      <label class="checkrow"><input type="checkbox" value="Recorded relevant measurements using approved test procedure"><span>Recorded relevant measurements using approved test procedure<small>Enter results and units in the observations field below.</small></span></label>
+      <label class="checkrow"><input type="checkbox" value="Compared findings with manufacturer specifications"><span>Compared findings with manufacturer specifications<small>Record the specification source and revision where available.</small></span></label>
+      <label class="checkrow"><input type="checkbox" value="Confirmed repair outcome using approved return-to-service process"><span>Confirmed repair outcome using approved return-to-service process<small>Complete only after required checks and authorisation.</small></span></label>
+    </div>
+    <div class="formgrid" style="margin-top:14px">
+      <div class="field full"><label>Measurements / observations</label><textarea id="dMeasurements" placeholder="Example: recorded reading, unit, test point reference, equipment ID and specification source."></textarea></div>
+      <div class="field full"><label>Suspected cause / findings</label><textarea id="dCause" placeholder="What did the checks indicate? Separate confirmed facts from suspected causes."></textarea></div>
+      <div class="field full"><label>Action taken / next step</label><textarea id="dAction" placeholder="Work completed, parts referred for approval, escalation or next diagnostic step..."></textarea></div>
+      <div class="field"><label>Status</label><select id="dStatus"><option>Open</option><option>In progress</option><option>Resolved</option><option>Escalated</option></select></div>
+      <div class="field"><label>Parts / reference</label><input id="dParts" placeholder="Part number, manual section or reference"></div>
+    </div>
+    <div class="formactions"><button class="btn" onclick="resetDiagnosis()">Clear</button><button class="btn primary" onclick="saveDiagnosis()">Save fault report</button></div>
   </div>
+</section>
 
-  <div id="nameEntry">
-    <p style="color:#0f0;margin-bottom:6px">NEW HIGH SCORE!</p>
-    <input id="nameInput" maxlength="3" placeholder="AAA" autocomplete="off" autocapitalize="characters">
-    <br>
-    <button class="btn" id="saveScoreBtn">SAVE</button>
-  </div>
+<section class="view" id="view-machines">
+  <div class="pagehead"><div><div class="eyebrow">ASSET REGISTER</div><h1>Machine register</h1><p>Keep a consistent record of machines supported by the workshop.</p></div><div class="actions"><button class="btn primary" onclick="document.getElementById('machineForm').classList.toggle('hidden')">＋ Add machine</button></div></div>
+  <div class="card hidden" id="machineForm"><div class="sectionhead"><h2>Register a machine</h2><span>Asset details</span></div><div class="formgrid">
+    <div class="field"><label>Machine name *</label><input id="mName" placeholder="e.g. Racing cabinet 01"></div><div class="field"><label>Asset ID *</label><input id="mId" placeholder="e.g. ARC-001"></div>
+    <div class="field"><label>Manufacturer</label><input id="mMaker" placeholder="Manufacturer"></div><div class="field"><label>Model</label><input id="mModel" placeholder="Model / version"></div>
+    <div class="field"><label>Location</label><input id="mLocation" placeholder="Site / zone"></div><div class="field"><label>Serial number</label><input id="mSerial" placeholder="Serial number"></div>
+  </div><div class="formactions"><button class="btn" onclick="document.getElementById('machineForm').classList.add('hidden')">Cancel</button><button class="btn primary" onclick="addMachine()">Save machine</button></div></div>
+  <div class="card" style="margin-top:14px"><div class="toolbar"><input class="search" id="machineSearch" placeholder="Search machines..." oninput="renderMachines()"><span class="muted" id="machineCount"></span></div><div class="tablewrap"><table><thead><tr><th>Asset ID</th><th>Machine</th><th>Manufacturer / model</th><th>Location</th><th>Actions</th></tr></thead><tbody id="machineRows"></tbody></table></div></div>
+</section>
 
-  <button class="btn" id="startBtn">START GAME</button>
-  <p style="margin-top:14px;font-size:10px;color:#3a5a3a">
-    Mobile: drag to move · tap to fire
-  </p>
-  <p style="margin-top:12px;font-size:11px;">
-    <a href="https://chat.whatsapp.com/EUTb1SsC6FPAGr3gJHW2Qx" target="_blank" rel="noopener"
-       style="color:#0f0;text-decoration:none;border-bottom:1px solid #0a4a0a;">
-      Arcade games feedback &amp; discussion
-    </a>
-  </p>
-</div>
+<section class="view" id="view-knowledge">
+  <div class="pagehead"><div><div class="eyebrow">SHARED TECHNICAL REFERENCE</div><h1>Knowledge base</h1><p>Capture repeatable solutions and useful technical references.</p></div><div class="actions"><button class="btn primary" onclick="document.getElementById('kbForm').classList.toggle('hidden')">＋ Add article</button></div></div>
+  <div class="card hidden" id="kbForm"><div class="sectionhead"><h2>New knowledge article</h2><span>Do not include confidential information without approval</span></div><div class="formgrid">
+    <div class="field"><label>Title *</label><input id="kTitle" placeholder="e.g. Cabinet fails to start - observations"></div><div class="field"><label>Category</label><select id="kCategory"><option>Fault finding</option><option>Machine reference</option><option>Parts / components</option><option>Service bulletin</option><option>Workshop procedure</option></select></div>
+    <div class="field full"><label>Summary / lesson learned *</label><textarea id="kBody" placeholder="Document symptoms, confirmed findings, approved resolution and applicable model/version..."></textarea></div>
+    <div class="field"><label>Machine / model</label><input id="kModel" placeholder="Applicable machine or model"></div><div class="field"><label>Reference source</label><input id="kSource" placeholder="Manual, bulletin or internal reference"></div>
+  </div><div class="formactions"><button class="btn" onclick="document.getElementById('kbForm').classList.add('hidden')">Cancel</button><button class="btn primary" onclick="addArticle()">Save article</button></div></div>
+  <div class="card" style="margin-top:14px"><div class="toolbar"><input class="search" id="kbSearch" placeholder="Search knowledge..." oninput="renderKB()"><span class="muted" id="kbCount"></span></div><div id="kbRows"></div></div>
+</section>
 
+<section class="view" id="view-reports">
+  <div class="pagehead"><div><div class="eyebrow">SERVICE RECORDS</div><h1>Fault reports</h1><p>Review diagnosis history, update status and print a service record.</p></div><div class="actions"><button class="btn" onclick="exportData()">Export backup</button><button class="btn primary" onclick="window.print()">Print reports</button></div></div>
+  <div class="card"><div class="toolbar"><input class="search" id="reportSearch" placeholder="Search reports..." oninput="renderReports()"><select class="search" id="reportFilter" style="max-width:170px" onchange="renderReports()"><option value="">All statuses</option><option>Open</option><option>In progress</option><option>Resolved</option><option>Escalated</option></select></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Machine</th><th>Fault</th><th>Technician</th><th>Priority</th><th>Status</th><th>View</th></tr></thead><tbody id="reportRows"></tbody></table></div><div id="reportDetail"></div></div>
+</section>
+</div></main></div>
+<div class="toast" id="toast"></div>
 <script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-const W = canvas.width;
-const H = canvas.height;
-
-const COLS = 10;
-const ROWS = 20;
-const CELL = 24;
-const OFFSET_X = (W - COLS * CELL) / 2;
-const OFFSET_Y = 18;
-const LOCKED_COLOR = '#1e3c2e';      // uniform locked stack colour
-const DANGER_ROW = 3;
-
-const COLORS = {
-  I: '#00e8e8', O: '#e8e800', T: '#b040f0',
-  L: '#e89000', J: '#3060f0', S: '#20e020', Z: '#e02020'
+const STORE='arcadeTechPro_v1';
+const seed={
+ machines:[
+  {id:'DEMO-001',name:'Racing Cabinet 01',maker:'Demonstration',model:'Twin-seat racer',location:'Workshop Bay A',serial:'DEMO-SN-001'},
+  {id:'DEMO-002',name:'Prize Game 02',maker:'Demonstration',model:'Prize / redemption',location:'Workshop Bay B',serial:'DEMO-SN-002'},
+  {id:'DEMO-003',name:'Rhythm Game 03',maker:'Demonstration',model:'Music cabinet',location:'Workshop Bay C',serial:'DEMO-SN-003'}
+ ],
+ reports:[
+  {id:'RPT-1001',date:'2026-11-08',machineId:'DEMO-001',machine:'Racing Cabinet 01',tech:'Demo Technician',category:'Controls / input',priority:'Medium',symptom:'Steering input reported as intermittent during play.',checks:['Confirmed machine identity and reviewed reported symptom','Reviewed manufacturer documentation and company procedure'],measurements:'Demonstration record only. No actual measurements.',cause:'Cause not yet confirmed.',action:'Review approved diagnostic procedure and continue investigation.',status:'In progress',parts:'',demo:true},
+  {id:'RPT-1002',date:'2026-11-07',machineId:'DEMO-002',machine:'Prize Game 02',tech:'Demo Technician',category:'Mechanism / motion',priority:'Low',symptom:'Mechanism did not complete its expected cycle.',checks:['Confirmed machine identity and reviewed reported symptom'],measurements:'Demonstration record only.',cause:'Pending inspection.',action:'Documented for follow-up.',status:'Open',parts:'',demo:true},
+  {id:'RPT-1003',date:'2026-11-05',machineId:'DEMO-003',machine:'Rhythm Game 03',tech:'Demo Technician',category:'Display / audio',priority:'Low',symptom:'Audio output reported as intermittent.',checks:['Confirmed machine identity and reviewed reported symptom','Reviewed manufacturer documentation and company procedure'],measurements:'Demonstration record only.',cause:'Example record: connection issue confirmed by authorised service process.',action:'Example only: recorded approved corrective action and return-to-service confirmation.',status:'Resolved',parts:'Demo reference',demo:true}
+ ],
+ articles:[
+  {id:'KB-001',title:'Example: Recording a repeat fault',category:'Fault finding',model:'All models',source:'Demonstration article',body:'Record the exact symptom, when it occurs, machine identification, checks completed, measurements with units and source specifications, confirmed findings, action taken and final outcome. Clearly distinguish observations from suspected causes.',demo:true},
+  {id:'KB-002',title:'Example: Power supply measurement record',category:'Workshop procedure',model:'Model-specific',source:'Use approved manufacturer service manual',body:'Document the specified test point, expected value and tolerance from the correct service manual, actual reading, units, instrument identification and test conditions. This article is a documentation example only; follow approved isolation and electrical safety procedures.',demo:true},
+  {id:'KB-003',title:'Example: USB peripheral identification',category:'Machine reference',model:'PC-based cabinets',source:'Manufacturer documentation',body:'Record peripheral description, VID/PID when available, operating system, driver version, connection history and observed symptoms. Do not attempt to bypass security or authentication controls.',demo:true}
+ ]
 };
-const SHAPES = {
-  I: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
-  O: [[1,1],[1,1]],
-  T: [[0,1,0],[1,1,1],[0,0,0]],
-  L: [[0,0,1],[1,1,1],[0,0,0]],
-  J: [[1,0,0],[1,1,1],[0,0,0]],
-  S: [[0,1,1],[1,1,0],[0,0,0]],
-  Z: [[1,1,0],[0,1,1],[0,0,0]]
-};
-const TYPES = Object.keys(SHAPES);
-
-let grid = [];
-let invaders = [];
-let bullets = [];
-let particles = [];
-let explosions = [];      // expanding rings
-let player = { x: COLS/2 - 0.5, y: ROWS - 1.5, w: 1.4, cooldown: 0 };
-let score = 0, level = 1, lives = 3;
-let gameOver = false;
-let invaderSpawnTimer = 0, invaderDir = 1, invaderStepTimer = 0;
-let keys = {};
-let touchX = null, isDragging = false, lastShot = 0;
-let shake = 0;
-let highScores = [];
-
-// ---------- Audio ----------
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let actx = null;
-
-function initAudio() {
-  if (!actx) actx = new AudioCtx();
+let db=load();
+function load(){try{const x=JSON.parse(localStorage.getItem(STORE));if(x&&Array.isArray(x.machines)&&Array.isArray(x.reports)&&Array.isArray(x.articles))return x}catch(e){}return structuredClone(seed)}
+function persist(){localStorage.setItem(STORE,JSON.stringify(db));refresh()}
+function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2300)}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function navigate(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById('view-'+v).classList.add('active');document.querySelectorAll('.nav button[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===v));document.getElementById('crumb').textContent=({dashboard:'Dashboard',diagnostics:'New diagnosis',machines:'Machine register',knowledge:'Knowledge base',reports:'Fault reports'})[v];if(v==='diagnostics')populateMachineSelect();if(v==='reports')renderReports();window.scrollTo(0,0)}
+document.querySelectorAll('.nav button[data-view]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.view)));
+function refresh(){renderDashboard();renderMachines();renderKB();renderReports();populateMachineSelect()}
+function renderDashboard(){
+ document.getElementById('statMachines').textContent=db.machines.length;
+ document.getElementById('statOpen').textContent=db.reports.filter(r=>r.status!=='Resolved').length;
+ document.getElementById('statResolved').textContent=db.reports.filter(r=>r.status==='Resolved').length;
+ document.getElementById('statKB').textContent=db.articles.length;
+ const rows=[...db.reports].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+ document.getElementById('recentRows').innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.machine)}</td><td>${esc(r.category)}</td><td>${priority(r.priority)}</td><td>${status(r.status)}</td></tr>`).join(''):`<tr><td colspan="4" class="empty">No fault reports yet.</td></tr>`;
 }
-
-function tone(freq, dur, type = 'square', vol = 0.09, slide = 0) {
-  if (!actx) return;
-  const o = actx.createOscillator();
-  const g = actx.createGain();
-  o.type = type;
-  o.frequency.setValueAtTime(freq, actx.currentTime);
-  if (slide) o.frequency.linearRampToValueAtTime(freq + slide, actx.currentTime + dur);
-  g.gain.setValueAtTime(vol, actx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
-  o.connect(g); g.connect(actx.destination);
-  o.start(); o.stop(actx.currentTime + dur);
+function priority(p){return `<span class="pill ${p.toLowerCase()}">${esc(p)}</span>`}
+function status(s){return `<span class="pill ${s==='Resolved'?'closed':s==='Open'?'open':s==='Escalated'?'high':'progress'}">${esc(s)}</span>`}
+function populateMachineSelect(){const s=document.getElementById('dMachine'),v=s.value;s.innerHTML='<option value="">Select machine</option>'+db.machines.map(m=>`<option value="${esc(m.id)}">${esc(m.id)} — ${esc(m.name)}</option>`).join('');if(db.machines.some(m=>m.id===v))s.value=v}
+function addMachine(){const name=val('mName'),id=val('mId').toUpperCase();if(!name||!id)return toast('Machine name and asset ID are required.');if(db.machines.some(m=>m.id===id))return toast('That asset ID already exists.');db.machines.push({id,name,maker:val('mMaker'),model:val('mModel'),location:val('mLocation'),serial:val('mSerial')});['mName','mId','mMaker','mModel','mLocation','mSerial'].forEach(x=>document.getElementById(x).value='');document.getElementById('machineForm').classList.add('hidden');persist();toast('Machine registered.')}
+function renderMachines(){const q=(document.getElementById('machineSearch')?.value||'').toLowerCase(),list=db.machines.filter(m=>[m.id,m.name,m.maker,m.model,m.location].join(' ').toLowerCase().includes(q));document.getElementById('machineCount').textContent=`${list.length} machines`;document.getElementById('machineRows').innerHTML=list.length?list.map(m=>`<tr><td><b>${esc(m.id)}</b></td><td>${esc(m.name)}</td><td>${esc([m.maker,m.model].filter(Boolean).join(' / ')||'—')}</td><td>${esc(m.location||'—')}</td><td><button class="smallbtn" onclick="deleteMachine('${esc(m.id)}')">Remove</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty">No machines found.</td></tr>`}
+function deleteMachine(id){if(db.reports.some(r=>r.machineId===id))return toast('Machine has reports. Keep it for record integrity.');if(confirm('Remove this machine from the register?')){db.machines=db.machines.filter(m=>m.id!==id);persist();toast('Machine removed.')}}
+function val(id){return document.getElementById(id).value.trim()}
+function saveDiagnosis(){
+ const machineId=val('dMachine'),machine=db.machines.find(m=>m.id===machineId),tech=val('dTech'),category=val('dCategory'),symptom=val('dSymptom');
+ if(!machine||!tech||!category||!symptom)return toast('Complete all required fields first.');
+ const checks=[...document.querySelectorAll('#diagnosticChecks input:checked')].map(x=>x.value);
+ db.reports.unshift({id:'RPT-'+Date.now().toString().slice(-8),date:new Date().toISOString().slice(0,10),machineId,machine:machine.name,tech,category,priority:val('dPriority'),symptom,checks,measurements:val('dMeasurements'),cause:val('dCause'),action:val('dAction'),status:val('dStatus'),parts:val('dParts'),demo:false});
+ persist();resetDiagnosis();navigate('reports');toast('Fault report saved locally.');
 }
-
-function noise(dur, vol = 0.06) {
-  if (!actx) return;
-  const bufferSize = actx.sampleRate * dur;
-  const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-  const src = actx.createBufferSource();
-  const g = actx.createGain();
-  src.buffer = buffer;
-  g.gain.setValueAtTime(vol, actx.currentTime);
-  g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
-  src.connect(g); g.connect(actx.destination);
-  src.start();
-}
-
-const SFX = {
-  shoot()  { tone(780, 0.06, 'square', 0.07, -200); },
-  hit()    { tone(320, 0.05, 'square', 0.08); noise(0.04, 0.04); },
-  explode(){ noise(0.18, 0.1); tone(120, 0.2, 'sawtooth', 0.09, -80); },
-  land()   { tone(90, 0.1, 'triangle', 0.08); },
-  clear(n) { tone(200 + n*70, 0.12, 'square', 0.1); if (n>1) tone(400, 0.18, 'sawtooth', 0.08); },
-  level()  { tone(440, 0.08); setTimeout(()=>tone(550,0.08),80); setTimeout(()=>tone(660,0.12),160); },
-  die()    { tone(180, 0.15, 'sawtooth', 0.1, -100); noise(0.25, 0.08); },
-  gameover(){ tone(150,0.3,'sawtooth',0.1,-80); setTimeout(()=>tone(100,0.4,'sawtooth',0.09,-40),200); }
-};
-
-// ---------- High scores ----------
-function loadHS() {
-  try {
-    highScores = JSON.parse(localStorage.getItem('tetrisInvadersHS') || '[]');
-  } catch { highScores = []; }
-  if (!Array.isArray(highScores)) highScores = [];
-  highScores = highScores.slice(0, 8);
-}
-
-function saveHS() {
-  localStorage.setItem('tetrisInvadersHS', JSON.stringify(highScores.slice(0, 8)));
-}
-
-function renderHS() {
-  const list = document.getElementById('hsList');
-  if (!highScores.length) {
-    list.innerHTML = '<div class="row"><span style="color:#4a6">No scores yet</span></div>';
-    return;
-  }
-  list.innerHTML = highScores.map((e, i) =>
-    `<div class="row"><span class="rank">${i+1}.</span><span class="name">${e.name}</span><span class="pts">${e.score}</span></div>`
-  ).join('');
-}
-
-function isHighScore(s) {
-  return highScores.length < 8 || s > (highScores[highScores.length-1]?.score || 0);
-}
-
-function addHighScore(name, s) {
-  highScores.push({ name: (name || 'AAA').toUpperCase().slice(0,3), score: s });
-  highScores.sort((a,b) => b.score - a.score);
-  highScores = highScores.slice(0, 8);
-  saveHS();
-  renderHS();
-}
-
-// ---------- Game helpers ----------
-function resetGrid() {
-  grid = Array.from({length: ROWS}, () => Array(COLS).fill(null));
-}
-
-function createInvader() {
-  const type = TYPES[Math.floor(Math.random() * TYPES.length)];
-  const shape = SHAPES[type].map(r => r.slice());
-  const maxX = COLS - shape[0].length;
-  const x = Math.floor(Math.random() * (maxX + 1));
-  return {
-    type, shape, x,
-    y: -shape.length + 1,
-    color: COLORS[type],
-    fallTimer: 0,
-    hp: shape.flat().filter(Boolean).length
-  };
-}
-
-function canPlace(shape, x, y) {
-  for (let r = 0; r < shape.length; r++) {
-    for (let c = 0; c < shape[r].length; c++) {
-      if (!shape[r][c]) continue;
-      const gx = Math.floor(x) + c;
-      const gy = Math.floor(y) + r;
-      if (gx < 0 || gx >= COLS || gy >= ROWS) return false;
-      if (gy >= 0 && grid[gy][gx]) return false;
-    }
-  }
-  return true;
-}
-
-function lockInvader(inv) {
-  for (let r = 0; r < inv.shape.length; r++) {
-    for (let c = 0; c < inv.shape[r].length; c++) {
-      if (!inv.shape[r][c]) continue;
-      const gx = Math.floor(inv.x) + c;
-      const gy = Math.floor(inv.y) + r;
-      if (gy >= 0 && gy < ROWS && gx >= 0 && gx < COLS) {
-        grid[gy][gx] = LOCKED_COLOR;   // uniform locked colour
-      }
-    }
-  }
-  clearLines();
-  for (let c = 0; c < COLS; c++) {
-    if (grid[0][c] || grid[1][c]) { loseLife(); return; }
-  }
-}
-
-function clearLines() {
-  let cleared = 0;
-  for (let r = ROWS - 1; r >= 0; r--) {
-    if (grid[r].every(cell => cell !== null)) {
-      for (let c = 0; c < COLS; c++) {
-        spawnExplosion(OFFSET_X + c * CELL + CELL/2, OFFSET_Y + r * CELL + CELL/2, LOCKED_COLOR);
-      }
-      grid.splice(r, 1);
-      grid.unshift(Array(COLS).fill(null));
-      cleared++;
-      r++;
-    }
-  }
-  if (cleared > 0) {
-    const pts = [0, 120, 350, 600, 1000][cleared] * level;
-    score += pts;
-    SFX.clear(cleared);
-    shake = 6 + cleared * 3;
-    if (cleared >= 3) spawnBigFlash();
-  }
-}
-
-function loseLife() {
-  lives--;
-  SFX.die();
-  shake = 12;
-  if (lives <= 0) {
-    gameOver = true;
-    SFX.gameover();
-    showGameOver();
-  } else {
-    for (let r = 0; r < 4; r++) grid[r] = Array(COLS).fill(null);
-    invaders = [];
-    bullets = [];
-  }
-  updateUI();
-}
-
-function spawnExplosion(x, y, color) {
-  // expanding ring
-  explosions.push({ x, y, r: 2, max: 22, life: 18, color });
-  // particles
-  for (let i = 0; i < 10; i++) {
-    const ang = Math.random() * Math.PI * 2;
-    const spd = 1.5 + Math.random() * 3.5;
-    particles.push({
-      x, y,
-      vx: Math.cos(ang) * spd,
-      vy: Math.sin(ang) * spd - 0.5,
-      life: 18 + Math.random() * 18,
-      maxLife: 30,
-      size: 2 + Math.random() * 3,
-      color: color || '#0f0',
-      type: Math.random() > 0.6 ? 'spark' : 'chunk'
-    });
-  }
-}
-
-function spawnBigFlash() {
-  for (let i = 0; i < 4; i++) {
-    explosions.push({
-      x: OFFSET_X + COLS * CELL / 2,
-      y: OFFSET_Y + ROWS * CELL / 2,
-      r: 5, max: 80 + i * 20, life: 25, color: '#0f0'
-    });
-  }
-}
-
-function shoot() {
-  if (player.cooldown > 0 || gameOver) return;
-  bullets.push({ x: player.x + 0.5, y: player.y - 0.3, vy: -0.48 });
-  player.cooldown = 11;
-  SFX.shoot();
-}
-
-function updateUI() {
-  document.getElementById('score').textContent = score;
-  document.getElementById('level').textContent = level;
-  document.getElementById('lives').textContent = lives;
-}
-
-function showGameOver() {
-  const ov = document.getElementById('overlay');
-  ov.style.display = 'flex';
-  document.querySelector('#overlay h1').textContent = 'GAME OVER';
-  document.getElementById('msg').innerHTML = `Final Score: <b style="color:#0f0">${score}</b><br>Level ${level}`;
-  document.getElementById('startBtn').textContent = 'PLAY AGAIN';
-  document.getElementById('nameEntry').style.display = 'none';
-
-  if (isHighScore(score) && score > 0) {
-    document.getElementById('nameEntry').style.display = 'block';
-    const inp = document.getElementById('nameInput');
-    inp.value = '';
-    setTimeout(() => inp.focus(), 100);
-  }
-  renderHS();
-}
-
-function startGame() {
-  initAudio();
-  resetGrid();
-  invaders = [];
-  bullets = [];
-  particles = [];
-  explosions = [];
-  player = { x: COLS/2 - 0.5, y: ROWS - 1.5, w: 1.4, cooldown: 0 };
-  score = 0; level = 1; lives = 3;
-  gameOver = false;
-  invaderSpawnTimer = 0; invaderDir = 1; invaderStepTimer = 0;
-  shake = 0;
-  document.getElementById('overlay').style.display = 'none';
-  document.getElementById('nameEntry').style.display = 'none';
-  updateUI();
-  requestAnimationFrame(loop);
-}
-
-// ---------- Input ----------
-window.addEventListener('keydown', e => {
-  keys[e.code] = true;
-  if (e.code === 'Space') { e.preventDefault(); shoot(); }
-  if (e.code === 'KeyR') { e.preventDefault(); startGame(); }
-});
-window.addEventListener('keyup', e => { keys[e.code] = false; });
-
-canvas.addEventListener('touchstart', e => {
-  e.preventDefault();
-  initAudio();
-  const t = e.touches[0];
-  const rect = canvas.getBoundingClientRect();
-  touchX = (t.clientX - rect.left) * (W / rect.width);
-  isDragging = true;
-  if (Date.now() - lastShot > 160) { shoot(); lastShot = Date.now(); }
-}, {passive:false});
-
-canvas.addEventListener('touchmove', e => {
-  e.preventDefault();
-  const t = e.touches[0];
-  const rect = canvas.getBoundingClientRect();
-  touchX = (t.clientX - rect.left) * (W / rect.width);
-}, {passive:false});
-
-canvas.addEventListener('touchend', () => { isDragging = false; touchX = null; });
-
-canvas.addEventListener('mousedown', e => {
-  initAudio();
-  const rect = canvas.getBoundingClientRect();
-  touchX = (e.clientX - rect.left) * (W / rect.width);
-  isDragging = true;
-  shoot();
-});
-canvas.addEventListener('mousemove', e => {
-  if (!isDragging) return;
-  const rect = canvas.getBoundingClientRect();
-  touchX = (e.clientX - rect.left) * (W / rect.width);
-});
-canvas.addEventListener('mouseup', () => { isDragging = false; touchX = null; });
-
-document.getElementById('startBtn').addEventListener('click', startGame);
-document.getElementById('restartBtn').addEventListener('click', startGame);
-document.getElementById('saveScoreBtn').addEventListener('click', () => {
-  const name = document.getElementById('nameInput').value || 'AAA';
-  addHighScore(name, score);
-  document.getElementById('nameEntry').style.display = 'none';
-});
-
-// ---------- Drawing ----------
-function shade(hex, amt) {
-  // simple darken/lighten
-  let col = hex.replace('#','');
-  if (col.length === 3) col = col[0]+col[0]+col[1]+col[1]+col[2]+col[2];
-  const num = parseInt(col, 16);
-  let r = Math.min(255, Math.max(0, (num >> 16) + amt));
-  let g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + amt));
-  let b = Math.min(255, Math.max(0, (num & 0xff) + amt));
-  return `rgb(${r},${g},${b})`;
-}
-
-function drawCube(gx, gy, color, glowing = false) {
-  if (gy < -2) return;
-  // subtle perspective: blocks higher up are slightly smaller / shifted
-  const depth = Math.max(0, gy) / ROWS;
-  const scale = 1 - depth * 0.06;
-  const perspX = (gx - COLS/2) * depth * 1.2;
-
-  const baseX = OFFSET_X + (gx + 0.5) * CELL + perspX;
-  const baseY = OFFSET_Y + gy * CELL;
-  const s = CELL * scale;
-  const x = baseX - s/2;
-  const y = baseY;
-
-  const depth3d = 5 * scale;   // extrusion size
-
-  // side face (right)
-  ctx.fillStyle = shade(color, -50);
-  ctx.beginPath();
-  ctx.moveTo(x + s, y);
-  ctx.lineTo(x + s + depth3d, y - depth3d * 0.6);
-  ctx.lineTo(x + s + depth3d, y + s - depth3d * 0.6);
-  ctx.lineTo(x + s, y + s);
-  ctx.closePath();
-  ctx.fill();
-
-  // top face
-  ctx.fillStyle = shade(color, 40);
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineTo(x + depth3d, y - depth3d * 0.6);
-  ctx.lineTo(x + s + depth3d, y - depth3d * 0.6);
-  ctx.lineTo(x + s, y);
-  ctx.closePath();
-  ctx.fill();
-
-  // front face
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, s, s);
-
-  // inner highlight
-  ctx.fillStyle = 'rgba(255,255,255,0.18)';
-  ctx.fillRect(x + 2, y + 2, s - 5, 3);
-
-  if (glowing) {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
-    ctx.globalAlpha = 0.7;
-    ctx.strokeRect(x - 1, y - 1, s + 2, s + 2);
-    ctx.globalAlpha = 1;
-  }
-}
-
-function drawShip(px, py) {
-  // simple 3D-ish ship
-  const x = OFFSET_X + px * CELL;
-  const y = OFFSET_Y + py * CELL;
-  const w = player.w * CELL;
-
-  ctx.fillStyle = '#0d0';
-  ctx.beginPath();
-  ctx.moveTo(x + w/2, y - 4);
-  ctx.lineTo(x - 2, y + CELL * 0.85);
-  ctx.lineTo(x + w + 2, y + CELL * 0.85);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle = '#0f0';
-  ctx.beginPath();
-  ctx.moveTo(x + w/2, y);
-  ctx.lineTo(x + 2, y + CELL * 0.8);
-  ctx.lineTo(x + w - 2, y + CELL * 0.8);
-  ctx.closePath();
-  ctx.fill();
-
-  // canopy
-  ctx.fillStyle = '#8ff';
-  ctx.fillRect(x + w/2 - 4, y + 6, 8, 7);
-}
-
-// ---------- Main loop ----------
-let last = 0;
-function loop(ts) {
-  if (gameOver) return;
-  const dt = Math.min(32, ts - last || 16);
-  last = ts;
-
-  // Player
-  if (keys['ArrowLeft'] || keys['KeyA']) player.x -= 0.19;
-  if (keys['ArrowRight'] || keys['KeyD']) player.x += 0.19;
-  if (touchX !== null) {
-    const target = (touchX - OFFSET_X) / CELL - 0.5;
-    player.x += (target - player.x) * 0.28;
-  }
-  player.x = Math.max(0, Math.min(COLS - player.w, player.x));
-  if (player.cooldown > 0) player.cooldown--;
-
-  // Spawn
-  invaderSpawnTimer++;
-  const spawnRate = Math.max(36, 105 - level * 7);
-  if (invaderSpawnTimer > spawnRate && invaders.length < 5 + Math.min(level, 6)) {
-    invaders.push(createInvader());
-    invaderSpawnTimer = 0;
-  }
-
-  // Side step
-  invaderStepTimer++;
-  const stepEvery = Math.max(16, 42 - level * 2.5);
-  if (invaderStepTimer >= stepEvery) {
-    invaderStepTimer = 0;
-    let hitWall = false;
-    for (const inv of invaders) {
-      if (inv.x + invaderDir < 0 || inv.x + inv.shape[0].length + invaderDir > COLS) {
-        hitWall = true; break;
-      }
-    }
-    if (hitWall) {
-      invaderDir *= -1;
-      for (const inv of invaders) inv.y += 1;
-    } else {
-      for (const inv of invaders) inv.x += invaderDir;
-    }
-  }
-
-  // Fall
-  for (let i = invaders.length - 1; i >= 0; i--) {
-    const inv = invaders[i];
-    inv.fallTimer++;
-    const fallSpeed = Math.max(7, 26 - level * 1.8);
-    if (inv.fallTimer >= fallSpeed) {
-      inv.fallTimer = 0;
-      if (canPlace(inv.shape, inv.x, inv.y + 1)) {
-        inv.y += 1;
-      } else {
-        lockInvader(inv);
-        invaders.splice(i, 1);
-        score += 12;
-        SFX.land();
-      }
-    }
-  }
-
-  // Bullets
-  for (let i = bullets.length - 1; i >= 0; i--) {
-    const b = bullets[i];
-    b.y += b.vy;
-    if (b.y < -1) { bullets.splice(i, 1); continue; }
-
-    let hit = false;
-    for (let j = invaders.length - 1; j >= 0; j--) {
-      const inv = invaders[j];
-      for (let r = 0; r < inv.shape.length; r++) {
-        for (let c = 0; c < inv.shape[r].length; c++) {
-          if (!inv.shape[r][c]) continue;
-          const bx = Math.floor(inv.x) + c;
-          const by = Math.floor(inv.y) + r;
-          if (Math.abs(b.x - (bx + 0.5)) < 0.6 && Math.abs(b.y - (by + 0.5)) < 0.6) {
-            inv.shape[r][c] = 0;
-            inv.hp--;
-            score += 10;
-            spawnExplosion(OFFSET_X + (bx + 0.5) * CELL, OFFSET_Y + (by + 0.5) * CELL, inv.color);
-            SFX.hit();
-            bullets.splice(i, 1);
-            hit = true;
-            if (inv.hp <= 0) {
-              invaders.splice(j, 1);
-              score += 35;
-              SFX.explode();
-              shake = 5;
-            }
-            break;
-          }
-        }
-        if (hit) break;
-      }
-      if (hit) break;
-    }
-  }
-
-  // Particles & explosions
-  for (let i = particles.length - 1; i >= 0; i--) {
-    const p = particles[i];
-    p.x += p.vx; p.y += p.vy;
-    p.vy += 0.08;
-    p.life--;
-    if (p.life <= 0) particles.splice(i, 1);
-  }
-  for (let i = explosions.length - 1; i >= 0; i--) {
-    const e = explosions[i];
-    e.r += (e.max - e.r) * 0.18;
-    e.life--;
-    if (e.life <= 0) explosions.splice(i, 1);
-  }
-
-  if (shake > 0) shake *= 0.85;
-  if (shake < 0.3) shake = 0;
-
-  // Level up
-  if (score >= level * 900) {
-    level++;
-    SFX.level();
-  }
-  updateUI();
-
-  // ---------- Draw ----------
-  ctx.save();
-  if (shake) {
-    ctx.translate((Math.random()-0.5)*shake*2, (Math.random()-0.5)*shake*2);
-  }
-
-  // background
-  ctx.fillStyle = '#050510';
-  ctx.fillRect(0, 0, W, H);
-
-  // stars
-  ctx.fillStyle = '#1a2a1a';
-  for (let i = 0; i < 50; i++) {
-    const sx = (i * 67 + ts * 0.008) % W;
-    const sy = (i * 37) % H;
-    ctx.globalAlpha = 0.4 + (i % 3) * 0.2;
-    ctx.fillRect(sx, sy, 1 + (i%2), 1 + (i%2));
-  }
-  ctx.globalAlpha = 1;
-
-  // playfield background panel
-  ctx.fillStyle = '#080818';
-  ctx.fillRect(OFFSET_X - 4, OFFSET_Y - 4, COLS * CELL + 8, ROWS * CELL + 8);
-  ctx.strokeStyle = '#0a2a0a';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(OFFSET_X - 4, OFFSET_Y - 4, COLS * CELL + 8, ROWS * CELL + 8);
-
-  // subtle grid lines
-  ctx.strokeStyle = 'rgba(0,40,20,0.35)';
-  ctx.lineWidth = 1;
-  for (let r = 0; r <= ROWS; r++) {
-    ctx.beginPath();
-    ctx.moveTo(OFFSET_X, OFFSET_Y + r * CELL);
-    ctx.lineTo(OFFSET_X + COLS * CELL, OFFSET_Y + r * CELL);
-    ctx.stroke();
-  }
-  for (let c = 0; c <= COLS; c++) {
-    ctx.beginPath();
-    ctx.moveTo(OFFSET_X + c * CELL, OFFSET_Y);
-    ctx.lineTo(OFFSET_X + c * CELL, OFFSET_Y + ROWS * CELL);
-    ctx.stroke();
-  }
-
-  // danger zone
-  ctx.fillStyle = 'rgba(80,0,0,0.12)';
-  ctx.fillRect(OFFSET_X, OFFSET_Y, COLS * CELL, DANGER_ROW * CELL);
-  ctx.strokeStyle = '#500';
-  ctx.setLineDash([5, 4]);
-  ctx.beginPath();
-  ctx.moveTo(OFFSET_X, OFFSET_Y + DANGER_ROW * CELL);
-  ctx.lineTo(OFFSET_X + COLS * CELL, OFFSET_Y + DANGER_ROW * CELL);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  // locked stack (uniform colour, solid cubes)
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      if (grid[r][c]) drawCube(c, r, grid[r][c], false);
-    }
-  }
-
-  // active invaders (bright + glow)
-  for (const inv of invaders) {
-    for (let r = 0; r < inv.shape.length; r++) {
-      for (let c = 0; c < inv.shape[r].length; c++) {
-        if (inv.shape[r][c]) drawCube(inv.x + c, inv.y + r, inv.color, true);
-      }
-    }
-  }
-
-  // bullets
-  ctx.fillStyle = '#9f9';
-  for (const b of bullets) {
-    const px = OFFSET_X + b.x * CELL;
-    const py = OFFSET_Y + b.y * CELL;
-    ctx.shadowColor = '#0f0';
-    ctx.shadowBlur = 8;
-    ctx.fillRect(px - 2, py - 7, 4, 12);
-    ctx.shadowBlur = 0;
-  }
-
-  // ship
-  drawShip(player.x, player.y);
-
-  // particles
-  for (const p of particles) {
-    const alpha = Math.max(0, p.life / p.maxLife);
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = p.color;
-    if (p.type === 'spark') {
-      ctx.fillRect(p.x - 1, p.y - 1, p.size, p.size * 0.5);
-    } else {
-      ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
-    }
-  }
-  ctx.globalAlpha = 1;
-
-  // explosion rings
-  for (const e of explosions) {
-    const alpha = Math.max(0, e.life / 18);
-    ctx.globalAlpha = alpha * 0.7;
-    ctx.strokeStyle = e.color;
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.globalAlpha = alpha * 0.25;
-    ctx.fillStyle = e.color;
-    ctx.beginPath();
-    ctx.arc(e.x, e.y, e.r * 0.6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-
-  ctx.restore();
-  requestAnimationFrame(loop);
-}
-
-// boot
-loadHS();
-renderHS();
+function resetDiagnosis(){['dMachine','dTech','dCategory','dPriority','dSymptom','dMeasurements','dCause','dAction','dStatus','dParts'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=({dPriority:'Medium',dStatus:'Open'}[id]||'')});document.querySelectorAll('#diagnosticChecks input').forEach(x=>x.checked=false)}
+function renderReports(){const q=(document.getElementById('reportSearch')?.value||'').toLowerCase(),f=document.getElementById('reportFilter')?.value||'',list=[...db.reports].filter(r=>(!f||r.status===f)&&[r.id,r.machine,r.machineId,r.tech,r.category,r.symptom].join(' ').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));document.getElementById('reportRows').innerHTML=list.length?list.map(r=>`<tr><td>${esc(r.date)}</td><td>${esc(r.machine)}</td><td>${esc(r.category)}</td><td>${esc(r.tech)}</td><td>${priority(r.priority)}</td><td>${status(r.status)}</td><td><button class="smallbtn" onclick="showReport('${r.id}')">Open →</button></td></tr>`).join(''):`<tr><td colspan="7" class="empty">No matching reports.</td></tr>`}
+function showReport(id){const r=db.reports.find(x=>x.id===id);if(!r)return;document.getElementById('reportDetail').innerHTML=`<div class="reportbox" id="printReport"><div class="sectionhead"><h3>Fault report · ${esc(r.id)}</h3><div class="actions no-print"><button class="btn" onclick="printOne('${r.id}')">Print this report</button><button class="btn" onclick="changeStatus('${r.id}')">Update status</button></div></div>${r.demo?'<div class="notice">DEMONSTRATION RECORD — illustrative data, not an actual service history.</div>':''}<div class="reportline"><span>Date / technician</span><b>${esc(r.date)} · ${esc(r.tech)}</b></div><div class="reportline"><span>Machine / asset</span><b>${esc(r.machine)} · ${esc(r.machineId)}</b></div><div class="reportline"><span>Category / priority</span><b>${esc(r.category)} · ${esc(r.priority)}</b></div><div class="reportline"><span>Reported symptom</span><span>${esc(r.symptom)}</span></div><div class="reportline"><span>Checks completed</span><span>${r.checks.length?r.checks.map(esc).join('<br>'):'None recorded'}</span></div><div class="reportline"><span>Measurements</span><span>${esc(r.measurements||'Not recorded')}</span></div><div class="reportline"><span>Findings</span><span>${esc(r.cause||'Not recorded')}</span></div><div class="reportline"><span>Action / next step</span><span>${esc(r.action||'Not recorded')}</span></div><div class="reportline"><span>Parts / reference</span><span>${esc(r.parts||'—')}</span></div><div class="reportline"><span>Status</span><span>${status(r.status)}</span></div></div>`}
+function changeStatus(id){const r=db.reports.find(x=>x.id===id),next=prompt('Enter status: Open, In progress, Resolved or Escalated',r.status);if(!next)return;const allowed=['Open','In progress','Resolved','Escalated'];if(!allowed.includes(next))return toast('Status not recognised.');r.status=next;persist();showReport(id);toast('Report status updated.')}
+function printOne(id){showReport(id);window.print()}
+function addArticle(){const title=val('kTitle'),body=val('kBody');if(!title||!body)return toast('Article title and summary are required.');db.articles.unshift({id:'KB-'+Date.now().toString().slice(-7),title,category:val('kCategory'),model:val('kModel'),source:val('kSource'),body,demo:false});['kTitle','kBody','kModel','kSource'].forEach(x=>document.getElementById(x).value='');document.getElementById('kbForm').classList.add('hidden');persist();toast('Knowledge article saved.')}
+function renderKB(){const q=(document.getElementById('kbSearch')?.value||'').toLowerCase(),list=db.articles.filter(a=>[a.title,a.category,a.model,a.body,a.source].join(' ').toLowerCase().includes(q));document.getElementById('kbCount').textContent=`${list.length} articles`;document.getElementById('kbRows').innerHTML=list.length?list.map(a=>`<article class="kbitem"><div class="sectionhead"><h3>${esc(a.title)}</h3><span>${esc(a.id)}</span></div><p>${esc(a.body)}</p><div class="kbmeta"><span class="pill">${esc(a.category)}</span>${a.model?`<span class="pill">${esc(a.model)}</span>`:''}${a.demo?'<span class="pill medium">Demo content</span>':''}<span class="muted">${esc(a.source||'')}</span></div></article>`).join(''):`<div class="empty"><b>No articles found</b>Try another search or add a new reference.</div>`}
+function exportData(){const blob=new Blob([JSON.stringify({...db,exportedAt:new Date().toISOString(),application:'Arcade Tech Pro'},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='arcade-tech-pro-backup.json';a.click();URL.revokeObjectURL(url);toast('Backup exported.')}
+function importData(file){const reader=new FileReader();reader.onload=()=>{try{const x=JSON.parse(reader.result);if(!Array.isArray(x.machines)||!Array.isArray(x.reports)||!Array.isArray(x.articles))throw Error();if(!confirm('Import will replace the data currently stored in this browser. Continue?'))return;db={machines:x.machines,reports:x.reports,articles:x.articles};persist();toast('Data imported.')}catch(e){toast('Import failed: file format not recognised.')}};reader.readAsText(file)}
+document.getElementById('exportBtn').addEventListener('click',exportData);document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('importFile').click());document.getElementById('importFile').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value=''});
+refresh();
 </script>
 </body>
 </html>
